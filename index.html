@@ -4,29 +4,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UltraCalc SaaS | Professional Video Metadata</title>
+  <title>UltraCalc Pro | Batch Video Duration</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a, #020617);
+      color: #f8fafc;
+      min-height: 100vh;
+      margin: 0;
     }
-    /* Custom scrollbar for a professional look */
+    .glass {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
     .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
+      background: rgba(255, 255, 255, 0.02);
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #e2e8f0;
+      background: rgba(99, 102, 241, 0.3);
       border-radius: 10px;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #cbd5e1;
+    @keyframes pulse-border {
+      0% { border-color: rgba(99, 102, 241, 0.2); }
+      50% { border-color: rgba(99, 102, 241, 0.6); }
+      100% { border-color: rgba(99, 102, 241, 0.2); }
+    }
+    .calculating-pulse {
+      animation: pulse-border 2s infinite;
     }
   </style>
 <script type="importmap">
@@ -42,7 +54,6 @@
 </head>
 <body>
   <div id="root"></div>
-  <!-- Explicitly load the entry point -->
   <script type="module" src="./index.tsx"></script>
 </body>
 </html>

@@ -1,26 +1,29 @@
 
 /**
- * Formats seconds into HH:mm:ss string
+ * Formats seconds into HH:mm:ss string. 
+ * If hours exceed 99, it expands naturally.
  */
 export const formatDuration = (seconds: number): string => {
+  if (isNaN(seconds) || seconds === 0) return "00:00:00";
+  
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
   
-  const hDisplay = h > 0 ? `${h.toString().padStart(2, '0')}:` : '00:';
-  const mDisplay = m.toString().padStart(2, '0') + ':';
-  const sDisplay = s.toString().padStart(2, '0');
+  const hStr = h.toString().padStart(2, '0');
+  const mStr = m.toString().padStart(2, '0');
+  const sStr = s.toString().padStart(2, '0');
   
-  return hDisplay + mDisplay + sDisplay;
+  return `${hStr}:${mStr}:${sStr}`;
 };
 
 /**
- * Formats bytes into readable string
+ * Formats bytes into a clean, human-readable string.
  */
 export const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) return '0 B';
   const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 };
