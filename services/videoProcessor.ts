@@ -1,5 +1,5 @@
 
-import { getMp4DurationInstantly } from './mp4Parser';
+import { getMp4DurationInstantly } from './mp4Parser.ts';
 
 export const getVideoDuration = async (
   source: File | string, 

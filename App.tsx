@@ -1,8 +1,8 @@
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { VideoMetadata, CalculationMode } from './types';
-import { getVideoDuration } from './services/videoProcessor';
-import { formatDuration, formatFileSize } from './utils/timeFormatter';
+import { VideoMetadata, CalculationMode } from './types.ts';
+import { getVideoDuration } from './services/videoProcessor.ts';
+import { formatDuration, formatFileSize } from './utils/timeFormatter.ts';
 
 /**
  * VLC-ULTRA MEDIA PLAYER COMPONENT
