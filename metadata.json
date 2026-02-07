@@ -1,0 +1,5 @@
+{
+  "name": "VideoDuration Master",
+  "description": "A high-performance batch video duration calculator that supports up to 1000 files, providing aggregate statistics and precise time formatting.",
+  "requestFramePermissions": []
+}
