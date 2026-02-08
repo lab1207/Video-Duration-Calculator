@@ -1,8 +1,61 @@
 
-import React, { useState, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { VideoMetadata, CalculationMode } from './types.ts';
 import { getVideoDuration } from './services/videoProcessor.ts';
 import { formatDuration, formatFileSize } from './utils/timeFormatter.ts';
+
+/**
+ * SafeVideoPlayer handles the lifecycle of Blob URLs to prevent
+ * playback interruptions during state re-renders.
+ */
+const SafeVideoPlayer: React.FC<{ 
+  file: File; 
+  onClose: () => void 
+}> = ({ file, onClose }) => {
+  const [url, setUrl] = useState<string>('');
+
+  useEffect(() => {
+    const newUrl = URL.createObjectURL(file);
+    setUrl(newUrl);
+    return () => {
+      URL.revokeObjectURL(newUrl);
+    };
+  }, [file]);
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-4 md:p-8">
+      <div className="absolute top-8 right-8 z-[110]">
+        <button 
+          onClick={onClose}
+          className="w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all active:scale-90 border border-white/10"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+      
+      <div className="w-full max-w-5xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative">
+        {url ? (
+          <video 
+            autoPlay 
+            controls 
+            playsInline
+            className="w-full h-full object-contain"
+            src={url}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-slate-500 font-bold uppercase tracking-widest text-xs">
+            Initializing Stream...
+          </div>
+        )}
+      </div>
+
+      <div className="absolute bottom-12 text-center px-6">
+        <h4 className="text-xl font-bold text-white mb-1 truncate max-w-md mx-auto">{file.name}</h4>
+        <p className="text-sm text-slate-500 uppercase tracking-widest font-bold">Native Engine Playback</p>
+      </div>
+    </div>
+  );
+};
 
 const FileRow: React.FC<{ 
   item: VideoMetadata; 
@@ -42,7 +95,7 @@ const FileRow: React.FC<{
               <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{item.step || 'Scanning'}</span>
             </div>
           ) : item.status === 'error' ? (
-            <span className="text-[10px] font-bold text-red-500 bg-red-500/10 px-2 py-1 rounded">Unsupported Format</span>
+            <span className="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-1 rounded">Metadata Limited</span>
           ) : (
             <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">In Queue</span>
           )}
@@ -240,8 +293,8 @@ const App: React.FC = () => {
                     <span className="text-[10px] font-bold text-slate-400 uppercase">Success</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-red-500" />
-                    <span className="text-[10px] font-bold text-slate-400 uppercase">Incompatible</span>
+                    <div className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span className="text-[10px] font-bold text-slate-400 uppercase">Legacy Header</span>
                   </div>
                </div>
                <p className="text-[10px] text-slate-500 font-bold uppercase italic">Processing takes place 100% on your device</p>
@@ -250,30 +303,12 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Modern Video Player Overlay */}
-      {playingVideoId && (
-        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-8">
-           <div className="absolute top-8 right-8">
-             <button 
-              onClick={() => setPlayingVideoId(null)}
-              className="w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-all active:scale-90"
-             >
-               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
-             </button>
-           </div>
-           <div className="w-full max-w-5xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-              <video 
-                autoPlay 
-                controls 
-                className="w-full h-full object-contain"
-                src={URL.createObjectURL(fileMap.get(playingVideoId)!)}
-              />
-           </div>
-           <div className="absolute bottom-12 text-center">
-              <h4 className="text-xl font-bold text-white mb-1">{fileMap.get(playingVideoId)!.name}</h4>
-              <p className="text-sm text-slate-500 uppercase tracking-widest font-bold">Metadata Quick Player</p>
-           </div>
-        </div>
+      {/* Robust Video Player Overlay */}
+      {playingVideoId && fileMap.get(playingVideoId) && (
+        <SafeVideoPlayer 
+          file={fileMap.get(playingVideoId)!} 
+          onClose={() => setPlayingVideoId(null)} 
+        />
       )}
     </div>
   );
