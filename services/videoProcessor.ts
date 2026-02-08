@@ -6,20 +6,24 @@ export const getVideoDuration = async (
   onStep: (step: string) => void
 ): Promise<{ duration: number; blob?: Blob }> => {
   
+  // 1. TRY INSTANT BINARY PARSE (Fastest path)
   if (source instanceof File) {
-    onStep("BINARY SCAN...");
     try {
-      const duration = await getMp4DurationInstantly(source);
-      if (duration > 0) return { duration };
+      const instant = await getMp4DurationInstantly(source);
+      if (instant > 0) {
+        onStep("INSTANT READ");
+        return { duration: instant };
+      }
     } catch (e) {
-      onStep("PROBING CODEC...");
+      onStep("VERIFYING...");
     }
   }
 
+  // 2. TRY LOCAL BROWSER ENGINE (Precision path)
   return new Promise(async (resolve, reject) => {
     let url: string = '';
     let blob: Blob | undefined;
-    let isSettled = false; // Prevent multiple resolutions/rejections
+    let isSettled = false; 
 
     if (typeof source === 'string') {
       try {
@@ -37,14 +41,8 @@ export const getVideoDuration = async (
     video.style.display = 'none';
     video.preload = 'metadata';
     video.muted = true;
+    video.playsInline = true;
     
-    const safeReject = (err: Error) => {
-      if (isSettled) return;
-      isSettled = true;
-      cleanup();
-      reject(err);
-    };
-
     const safeResolve = (data: { duration: number; blob?: Blob }) => {
       if (isSettled) return;
       isSettled = true;
@@ -52,38 +50,48 @@ export const getVideoDuration = async (
       resolve(data);
     };
 
-    // Memory safeguard
-    const timeout = setTimeout(() => {
-      safeReject(new Error("Probe Timeout"));
-    }, 10000);
-
     const cleanup = () => {
-      clearTimeout(timeout);
       video.onloadedmetadata = null;
+      video.onseeked = null;
       video.onerror = null;
-      video.pause();
-      // Using removeAttribute prevents "no supported source" console noise
       video.removeAttribute('src'); 
       video.load();   
-      if (url) URL.revokeObjectURL(url);
+      if (url && typeof source !== 'string') URL.revokeObjectURL(url);
     };
 
     video.onloadedmetadata = () => {
-      const d = video.duration;
-      if (d && !isNaN(d) && d !== Infinity) {
-        safeResolve({ duration: d, blob });
+      // Browser reports container duration here. 
+      // To solve the "extra seconds" error, we seek to verify the actual media end.
+      if (video.duration > 0 && video.duration !== Infinity) {
+        // Seek to the reported end to see if the browser snaps to a more accurate value
+        video.currentTime = video.duration;
       } else {
-        safeReject(new Error("Invalid Duration"));
+        // Force seek to end for fragmented streams
+        video.currentTime = 999999; 
       }
     };
 
-    video.onerror = () => {
-      // Browsers often fire error when src is cleared; we ignore if already settled
-      if (!isSettled) {
-        safeReject(new Error("Codec Incompatible"));
+    video.onseeked = () => {
+      // Browsers update duration more accurately after a seek to end
+      const finalDuration = video.duration !== Infinity ? video.duration : video.currentTime;
+      if (finalDuration > 0) {
+        safeResolve({ duration: finalDuration, blob });
       }
     };
 
+    video.onerror = () => reject(new Error("Format Error"));
     video.src = url;
+    video.load();
+
+    // Safety timeout to prevent infinite processing
+    setTimeout(() => {
+      if (!isSettled) {
+        if (video.duration > 0 && video.duration !== Infinity) {
+          safeResolve({ duration: video.duration, blob });
+        } else {
+          reject(new Error("Timeout"));
+        }
+      }
+    }, 5000);
   });
 };
