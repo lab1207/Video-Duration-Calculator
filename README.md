@@ -66,29 +66,26 @@ Fast • Browser-Based • Privacy First • Open Source
 The application follows a three-stage detection pipeline.
 
 ```text
-               Upload Videos
-                     │
-                     ▼
-       ┌──────────────────────────┐
-       │  Binary MP4 Parser ⚡     │
-       └──────────────────────────┘
-              │
-      Success │ Failed
-              ▼
-      Display Result
-              │
-              ▼
-     HTML5 Video Metadata
-              │
-      Success │ Failed
-              ▼
-      Display Result
-              │
-              ▼
-     Gemini AI Fallback 🤖
-              │
-              ▼
-      Display Result
+       [ Upload Video Files ]
+                 │
+                 ▼
+    ┌─────────────────────────┐
+    │  1. Binary MP4 Parser   │ ──(Success)──► [ Display Results ✅ ]
+    └─────────────────────────┘
+                 │
+             (Failed)
+                 │
+                 ▼
+    ┌─────────────────────────┐
+    │ 2. HTML5 Metadata API   │ ──(Success)──► [ Display Results ✅ ]
+    └─────────────────────────┘
+                 │
+             (Failed)
+                 │
+                 ▼
+    ┌─────────────────────────┐
+    │ 3. Gemini AI Fallback   │ ──(Success)──► [ Display Results ✅ ]
+    └─────────────────────────┘
 ```
 
 The majority of MP4 files are processed locally using the custom binary parser, making the application extremely fast while keeping videos on your device.
