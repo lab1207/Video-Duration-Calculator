@@ -233,12 +233,3 @@ Feel free to open an issue or submit a pull request.
 
 This project is licensed under the MIT License.
 
----
-
-<div align="center">
-
-### ⭐ If you found this project useful, consider giving it a star!
-
-It helps the project reach more developers and supports future improvements.
-
-</div>
