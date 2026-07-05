@@ -1,20 +1,60 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+
+# 🎬 Video Duration Calculator
+
+**Batch process, parse metadata, and analyze video content seamlessly using cutting-edge AI.**
+
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Gemini AI](https://img.shields.io/badge/Gemini%20AI-blue?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
+[![Deploy](https://img.shields.io/badge/Vercel-Deployed-success?style=for-the-badge&logo=vercel)](https://video-duration-calculator.vercel.app)
+
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-live-demo">Live Demo</a> •
+  <a href="#%EF%B8%8F-tech-stack">Tech Stack</a> •
+  <a href="#%EF%B8%8F-getting-started">Getting Started</a>
+</p>
+
+---
+
 </div>
 
-# Run and deploy your AI Studio app
+## 🚀 Live Demo
+Experience the lightning-fast processing live on Vercel:
+👉 **[video-duration-calculator.vercel.app](https://video-duration-calculator.vercel.app)**
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/drive/14Vh62c7WEHx0tmCyXioyz9j_XmT0EAZi
+## ✨ Features
 
-## Run Locally
+- **⚡ Bulk Video Processing:** Upload or link multiple videos to calculate total and individual durations in milliseconds.
+- **🤖 Gemini AI Integration:** Smart context understanding and deep automated video insights or content summarizing.
+- **📁 Advanced MP4 Parsing:** Ultra-fast, client-side metadata extraction directly in the browser.
+- **📊 Intuitive Dashboard:** Clean UI engineered with React and TypeScript for absolute responsive fluidity.
 
-**Prerequisites:**  Node.js
+---
 
+## 🛠️ Tech Stack
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- **Frontend Core:** React 18, Vite (for blazing fast builds)
+- **Language:** TypeScript (Type-safe codebase)
+- **AI Engine:** Google Gemini AI Studio API
+- **Deployment:** Vercel
+
+---
+
+## 🏗️ Getting Started
+
+Follow these simple steps to run the project locally.
+
+### 📋 Prerequisites
+Ensure you have **Node.js** installed on your system.
+
+### 🔧 Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/lab1207/Video-Duration-Calculator.git](https://github.com/lab1207/Video-Duration-Calculator.git)
+   cd Video-Duration-Calculator
