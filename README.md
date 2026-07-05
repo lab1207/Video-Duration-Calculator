@@ -62,6 +62,16 @@ Fast • Browser-Based • Privacy First • Open Source
 
 ---
 
+## Why?
+
+Most online video duration calculators require uploading videos to a server.
+
+This project processes videos locally whenever possible using a custom MP4 binary parser.
+
+This makes duration detection significantly faster while keeping your videos private.
+
+---
+
 # 🚀 How it Works
 
 The application follows a three-stage detection pipeline.
