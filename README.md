@@ -1,63 +1,238 @@
+# 🎥 Video Duration Calculator
 
-<div align="center"><img width="1915" height="903" alt="demo 
-dashbaord" src="https://github.com/user-attachments/assets/deaf57a3-3b55-4bc5-823f-317423b8260a" />
+A fast, privacy-first web application that calculates the duration of multiple video files directly in your browser.
 
-
-# 🎬 Video Duration Calculator
-
-**Batch process, parse metadata, and analyze video content seamlessly using cutting-edge AI.**
-
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white)](https://vitejs.dev/)
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Gemini AI](https://img.shields.io/badge/Gemini%20AI-blue?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
-[![Deploy](https://img.shields.io/badge/Vercel-Deployed-success?style=for-the-badge&logo=vercel)](https://video-duration-calculator.vercel.app)
-
-<p align="center">
-  <a href="#-features">Features</a> •
-  <a href="#-live-demo">Live Demo</a> •
-  <a href="#%EF%B8%8F-tech-stack">Tech Stack</a> •
-  <a href="#%EF%B8%8F-getting-started">Getting Started</a>
-</p>
-
----
-
-</div>
-
-## 🚀 Live Demo
-Experience the lightning-fast processing live on Vercel:
-👉 **[video-duration-calculator.vercel.app](https://video-duration-calculator.vercel.app)**
+Unlike traditional video tools, this application reads video metadata without uploading files to a server whenever possible, making it fast, secure, and suitable for large collections of videos.
 
 ---
 
 ## ✨ Features
 
-- **⚡ Bulk Video Processing:** Upload or link multiple videos to calculate total and individual durations in milliseconds.
-- **🤖 Gemini AI Integration:** Smart context understanding and deep automated video insights or content summarizing.
-- **📁 Advanced MP4 Parsing:** Ultra-fast, client-side metadata extraction directly in the browser.
-- **📊 Intuitive Dashboard:** Clean UI engineered with React and TypeScript for absolute responsive fluidity.
+- ⚡ Fast MP4 metadata parsing
+- 📁 Drag & Drop multiple video files
+- 🎬 Supports batch processing
+- 📊 Displays individual video durations
+- ⏱ Calculates total duration
+- 📈 Calculates average duration
+- 🔒 Privacy-first processing
+- 💻 Runs entirely in your browser
+- 📱 Responsive modern interface
+- 🤖 AI-assisted fallback for unsupported files
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 How It Works
 
-- **Frontend Core:** React 18, Vite (for blazing fast builds)
-- **Language:** TypeScript (Type-safe codebase)
-- **AI Engine:** Google Gemini AI Studio API
-- **Deployment:** Vercel
+The application follows a multi-step processing pipeline to obtain video durations as efficiently as possible.
+
+```text
+Upload Videos
+      │
+      ▼
+Binary MP4 Parser
+      │
+      ├── Success ✅
+      │
+      └── Failed
+            │
+            ▼
+Browser Metadata Extraction
+            │
+            ├── Success ✅
+            │
+            └── Failed
+                  │
+                  ▼
+AI Fallback
+```
+
+Most MP4 files are processed instantly by reading metadata directly from the file without decoding the entire video.
 
 ---
 
-## 🏗️ Getting Started
+## 🛠 Technology Stack
 
-Follow these simple steps to run the project locally.
+- React
+- TypeScript
+- Vite
+- HTML5 Video API
+- Custom MP4 Binary Parser
+- Google Gemini AI (Fallback)
 
-### 📋 Prerequisites
-Ensure you have **Node.js** installed on your system.
+---
 
-### 🔧 Installation
+## 📂 Project Structure
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/lab1207/Video-Duration-Calculator.git](https://github.com/lab1207/Video-Duration-Calculator.git)
-   cd Video-Duration-Calculator
+```text
+src/
+│
+├── components/
+├── utils/
+│   ├── mp4Parser.ts
+│   ├── videoProcessor.ts
+│   └── timeFormatter.ts
+│
+├── types.ts
+├── App.tsx
+└── main.tsx
+```
+
+---
+
+## ⚡ Processing Strategy
+
+The application attempts to determine video duration using the following methods:
+
+### 1. Binary MP4 Parsing
+
+Reads MP4 metadata directly from the file.
+
+Advantages:
+
+- Extremely fast
+- No video decoding
+- Minimal memory usage
+
+---
+
+### 2. Browser Metadata
+
+If binary parsing fails, the browser loads the video's metadata using the HTML5 Video API.
+
+Advantages:
+
+- Supports additional formats
+- Accurate duration information
+
+---
+
+### 3. AI Fallback
+
+If neither method succeeds, an optional AI fallback attempts to determine the duration.
+
+> **Note**
+>
+> AI functionality requires a valid Gemini API key.
+
+---
+
+## 🔒 Privacy
+
+Files are processed locally in your browser whenever possible.
+
+Videos are only sent to the AI provider if the AI fallback is enabled and local processing cannot determine the duration.
+
+---
+
+## 📦 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/USERNAME/Video-Duration-Calculator.git
+cd Video-Duration-Calculator
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Create an environment file
+
+Create a `.env` file in the project root and add your Google Gemini API key.
+
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+> You can obtain a free Gemini API key from Google AI Studio:
+> https://aistudio.google.com/app/apikey
+
+### 4. Start the development server
+
+```bash
+npm run dev
+```
+
+### 5. Build for production
+
+```bash
+npm run build
+```
+
+---
+
+## 🔑 Environment Variables
+
+| Variable | Required | Description |
+|----------|:--------:|-------------|
+| `GEMINI_API_KEY` | Optional | Google Gemini API key used only for the AI fallback when local video duration detection cannot determine the duration. |
+
+---
+
+## 🤖 AI Fallback
+
+The application is designed to determine video durations locally whenever possible.
+
+Processing order:
+
+1. MP4 Binary Parser
+2. Browser Metadata
+3. Google Gemini AI (Optional)
+
+The AI fallback is **only used if both local methods fail**.
+
+If you don't provide a `GEMINI_API_KEY`, the application will continue working normally for supported video formats. Only the optional AI fallback will be unavailable.
+
+Preview production build
+
+```bash
+npm run preview
+```
+
+---
+
+## 🌐 Browser Support
+
+- Chrome
+- Edge
+- Firefox
+- Safari
+
+---
+
+## 📈 Future Improvements
+
+- Folder upload
+- Recursive directory scanning
+- Parallel processing queue
+- Export results to CSV
+- Export results to Excel
+- Export results to JSON
+- Additional video format support
+- Progress indicators
+- Offline mode
+- Duration filters
+- File search
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+Feel free to submit issues, feature requests, or pull requests to help improve the project.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
