@@ -37,7 +37,8 @@ Fast • Browser-Based • Privacy First • Open Source
 
 # 📸 Preview
 
-> Replace this image with your own screenshot or GIF.
+<img width="1915" height="903" alt="demo dashbaord" src="https://github.com/user-attachments/assets/2bca10b9-b594-4e30-b37b-609aa00f53f4" />
+
 
 <p align="center">
 
