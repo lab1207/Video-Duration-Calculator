@@ -6,7 +6,7 @@
 
 <p>
   <a href="https://github.com/lab1207/Video-Duration-Calculator">
-    <img src="https://img.shields.io/github/stars/lab1207/Video-Duration-Calculator?style=for-the-badge" />
+    
   </a>
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
