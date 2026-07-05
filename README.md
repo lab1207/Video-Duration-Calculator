@@ -1,5 +1,7 @@
 
-<div align="center">
+<div align="center"><img width="1915" height="903" alt="demo 
+dashbaord" src="https://github.com/user-attachments/assets/deaf57a3-3b55-4bc5-823f-317423b8260a" />
+
 
 # 🎬 Video Duration Calculator
 
